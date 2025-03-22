@@ -35,24 +35,16 @@ exit /b 1
 if "%INSTALL_PATH:~-1%"=="\" set "INSTALL_PATH=%INSTALL_PATH:~0,-1%"
 set "DATA_PATH=%INSTALL_PATH%\Data"
 
-:: 현재 사용자 이름 가져오기
-set "USERNAME=%USERNAME%"
-
-:: 현재 시간 가져오기 (UTC 형식)
-for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set datetime=%%I
-set "YEAR=%datetime:~0,4%"
-set "MONTH=%datetime:~4,2%"
-set "DAY=%datetime:~6,2%"
-set "HOUR=%datetime:~8,2%"
-set "MINUTE=%datetime:~10,2%"
-set "SECOND=%datetime:~12,2%"
+:: 고정된 값 설정
+set "FIXED_USERNAME=hiboss112"
+set "FIXED_TIME=2025-03-22 15:47:44"
 
 echo 설치 정보:
-echo 사용자: %USERNAME%
 echo 게임 실행 파일: %GAME_EXE%
 echo 설치 경로: %INSTALL_PATH%
 echo 데이터 경로: %DATA_PATH%
-echo 현재 시간: %YEAR%-%MONTH%-%DAY% %HOUR%:%MINUTE%:%SECOND%
+echo 사용자: %FIXED_USERNAME%
+echo 로그인 시간: %FIXED_TIME%
 echo.
 
 :: 레지스트리 설정
@@ -70,15 +62,15 @@ reg add "HKLM\SOFTWARE\WOW6432Node\idomnet\Exlove" /v "CompanyName" /t REG_SZ /d
 reg add "HKLM\SOFTWARE\WOW6432Node\idomnet\Exlove" /v "GameName" /t REG_SZ /d "Exlove" /f
 reg add "HKLM\SOFTWARE\WOW6432Node\idomnet\Exlove" /v "Version" /t REG_SZ /d "1.0" /f
 
-:: HKEY_CURRENT_USER 설정
+:: HKEY_CURRENT_USER 설정 (고정된 값 사용)
 echo 사용자 레지스트리 설정 중...
 reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "CompanyName" /t REG_SZ /d "idomnet" /f
 reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "GameName" /t REG_SZ /d "Exlove" /f
 reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "Version" /t REG_SZ /d "1.0" /f
-reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "Username" /t REG_SZ /d "%USERNAME%" /f
-reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "LastLoginTime" /t REG_SZ /d "%YEAR%-%MONTH%-%DAY% %HOUR%:%MINUTE%:%SECOND%" /f
+reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "Username" /t REG_SZ /d "%FIXED_USERNAME%" /f
+reg add "HKCU\SOFTWARE\idomnet\Exlove" /v "LastLoginTime" /t REG_SZ /d "%FIXED_TIME%" /f
 
 echo.
-echo 레지스트리 설정이 완료.
-echo 게임을 실행.
+echo 레지스트리 설정이 완료되었습니다.
+echo 게임을 실행해주세요.
 pause
