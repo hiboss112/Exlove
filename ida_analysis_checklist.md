@@ -261,16 +261,26 @@ for (y = 0; y < map_height; y++) {
 
 ## 🔍 IDA Pro에서 지금 실행할 명령
 
-### 방법 1: 문자열 검색으로 타일 렌더링 함수 찾기
+### ⚠️ 중요: Import 테이블 분석 완료!
+**이 게임은 DirectDraw + GDI를 사용합니다.**
+- ✅ PatBlt 있음 (단색 채우기)
+- ❌ BitBlt 없음
+- ❌ StretchBlt 없음
+- ❌ FillRect 없음
+
+### 방법 1: PatBlt 검색 (최우선!) ⭐⭐⭐⭐⭐
 ```
-Shift + F12 (Strings window)
-검색어: "tile", "draw", "render", "blit"
+Ctrl + F → "PatBlt"
+→ Import 주소: 0048105C
+→ Ctrl + X (호출하는 함수 확인)
+→ F5 (디컴파일)
 ```
 
-### 방법 2: API 호출 역추적
+### 방법 2: SelectObject + CreateSolidBrush 패턴 검색
 ```
-Ctrl + F (Find) → "DrawPrimitive" 또는 "BitBlt"
-Xref로 호출하는 함수 찾기 (Ctrl + X)
+Ctrl + F → "SelectObject"
+Ctrl + F → "CreateSolidBrush" (없으면 상수 검색)
+Alt + I → 255 (RGB 빨간색 R값)
 ```
 
 ### 방법 3: 상수 검색으로 타일 크기 찾기
